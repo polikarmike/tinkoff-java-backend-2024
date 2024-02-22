@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class MessageProcessor implements IUserMessageProcessor {
     private final CommandHolder commandHolder;
 
-    @Autowired
     public MessageProcessor(CommandHolder commandHolder) {
         this.commandHolder = commandHolder;
     }
