@@ -1,7 +1,8 @@
 package edu.java.bot.commands.impl;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.commands.ICommand;
+import edu.java.bot.commands.Command;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(0)
-public class StartCommand implements ICommand {
+@Slf4j
+public class StartCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(StartCommand.class);
     private static final String COMMAND_NAME = "/start";
     private static final String COMMAND_DESCRIPTION = "Начать работу с ботом и зарегистрироваться";
@@ -17,7 +19,7 @@ public class StartCommand implements ICommand {
 
     @Override
     public String execute(Update update) {
-        LOGGER.info("Start command executed");
+        log.info("Start command executed");
         return COMMAND_RESPONSE;
     }
 

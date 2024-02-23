@@ -5,12 +5,11 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.commands.CommandHolder;
-import edu.java.bot.processor.MessageProcessor;
+import edu.java.bot.processor.SimpleUserMessageProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.slf4j.Logger;
 import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.mockito.Mockito;
@@ -20,21 +19,17 @@ import static org.mockito.Mockito.when;
 class UpdateTrackerBotTest {
 
     private TelegramBot telegramBot;
-    private MessageProcessor messageProcessor;
+    private SimpleUserMessageProcessor simpleUserMessageProcessor;
     private CommandHolder commandHolder;
-    private Logger logger;
-
     private UpdateTrackerBot updateTrackerBot;
 
     @BeforeEach
     void setUp() {
         // Given
         telegramBot = Mockito.mock(TelegramBot.class);
-        messageProcessor = Mockito.mock(MessageProcessor.class);
+        simpleUserMessageProcessor = Mockito.mock(SimpleUserMessageProcessor.class);
         commandHolder = Mockito.mock(CommandHolder.class);
-        logger = Mockito.mock(Logger.class);
-        updateTrackerBot = new UpdateTrackerBot(telegramBot, messageProcessor, commandHolder);
-        UpdateTrackerBot.logger = logger;
+        updateTrackerBot = new UpdateTrackerBot(telegramBot, simpleUserMessageProcessor, commandHolder);
     }
 
     @Test
@@ -58,7 +53,7 @@ class UpdateTrackerBotTest {
      Update update=Mockito.mock(Update.class);
      Message message=Mockito.mock(Message.class);
      when(update.message()).thenReturn(message);
-     when(messageProcessor.process(update)).thenReturn(response);
+     when(simpleUserMessageProcessor.process(update)).thenReturn(response);
 
      // When
      updateTrackerBot.process(Collections.singletonList(update));
@@ -77,7 +72,6 @@ class UpdateTrackerBotTest {
 
         // Then
         verify(telegramBot).setUpdatesListener(updateTrackerBot);
-        verify(logger).info("UpdateTrackerBot started successfully.");
     }
 
     @Test
@@ -88,7 +82,6 @@ class UpdateTrackerBotTest {
 
         // Then
         verify(telegramBot).removeGetUpdatesListener();
-        verify(logger).info("UpdateTrackerBot closed successfully.");
     }
 }
 

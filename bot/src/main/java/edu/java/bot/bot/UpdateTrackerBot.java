@@ -8,81 +8,78 @@ import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
+import edu.java.bot.commands.Command;
 import edu.java.bot.commands.CommandHolder;
-import edu.java.bot.commands.ICommand;
-import edu.java.bot.processor.MessageProcessor;
+import edu.java.bot.processor.SimpleUserMessageProcessor;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UpdateTrackerBot  implements IBot {
-    // Сделал Логгер публичным для тестирования
-    public static Logger logger = LoggerFactory.getLogger(UpdateTrackerBot.class);
+@RequiredArgsConstructor
+@Slf4j
+public class UpdateTrackerBot  implements Bot {
     private final TelegramBot bot;
-    private final MessageProcessor messageProcessor;
+    private final SimpleUserMessageProcessor simpleUserMessageProcessor;
     private final CommandHolder commandHolder;
-
-    public UpdateTrackerBot(TelegramBot bot, MessageProcessor messageProcessor, CommandHolder commandHolder) {
-        this.bot = bot;
-        this.messageProcessor = messageProcessor;
-        this.commandHolder = commandHolder;
-    }
 
     @Override
     public <T extends BaseRequest<T, R>, R extends BaseResponse> void execute(BaseRequest<T, R> request) {
         try {
             bot.execute(request);
         } catch (Exception e) {
-            logger.error("Error executing request", e);
+            log.error("Error executing request", e);
         }
     }
 
     @Override
     public int process(List<Update> updates) {
         for (Update update : updates) {
-            if (update.message() != null) {
-                try {
-                    SendMessage response = messageProcessor.process(update);
-                    bot.execute(response);
-                } catch (Exception e) {
-                    logger.error("Error sending message response", e);
-                }
+            if (update.message() == null) {
+                return UpdatesListener.CONFIRMED_UPDATES_ALL;
             }
+
+            SendMessage response = simpleUserMessageProcessor.process(update);
+            execute(response);
         }
+
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
     @PostConstruct
     @Override
     public void start() {
-        logger.info("Starting UpdateTrackerBot...");
+        log.info("Starting UpdateTrackerBot...");
         bot.setUpdatesListener(this);
         createMenuCommands();
-        logger.info("UpdateTrackerBot started successfully.");
+        log.info("UpdateTrackerBot started successfully.");
     }
 
     @PreDestroy
     @Override
     public void close() {
-        logger.info("Closing UpdateTrackerBot...");
+        log.info("Closing UpdateTrackerBot...");
         bot.removeGetUpdatesListener();
-        logger.info("UpdateTrackerBot closed successfully.");
+        log.info("UpdateTrackerBot closed successfully.");
     }
 
     private void createMenuCommands() {
-        BotCommand[] menuCommands = commandHolder.getAllCommands().values().stream()
-            .map(ICommand::toApiCommand)
+        BotCommand[] menuCommands = commandHolder.getAllCommands().stream()
+            .map(this::toApiCommand)
             .toArray(BotCommand[]::new);
 
         try {
-            bot.execute(new SetMyCommands(menuCommands));
-            logger.info("Menu commands created successfully.");
+            execute(new SetMyCommands(menuCommands));
+            log.info("Menu commands created successfully.");
         } catch (Exception e) {
-            logger.error("Error creating menu commands", e);
+            log.error("Error creating menu commands", e);
         }
+    }
+
+    private BotCommand toApiCommand(Command command) {
+        return new BotCommand(command.getName(), command.getDescription());
     }
 }
