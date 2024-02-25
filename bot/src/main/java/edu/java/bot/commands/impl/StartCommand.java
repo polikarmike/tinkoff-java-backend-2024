@@ -5,11 +5,9 @@ import edu.java.bot.commands.Command;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(0)
 @Slf4j
 public class StartCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(StartCommand.class);

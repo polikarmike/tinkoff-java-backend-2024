@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,7 @@ public class CommandHolderTest {
     @DisplayName("Проверка получения всех команд")
     public void testGetAllCommands() {
         // When
-        List<Command> allCommands = commandHolder.getAllCommands();
+        Collection<Command> allCommands = commandHolder.getAllCommands();
 
         // Then
         assertEquals(2, allCommands.size());
@@ -78,7 +79,7 @@ public class CommandHolderTest {
 
         // When
         CommandHolder emptyCommandHolder = new CommandHolder(emptyCommandList);
-        List<Command> allCommands = emptyCommandHolder.getAllCommands();
+        Collection<Command> allCommands = emptyCommandHolder.getAllCommands();
 
         // Then
         assertEquals(0, allCommands.size());

@@ -1,25 +1,27 @@
 package edu.java.bot.commands;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CommandHolder {
-    private final List<Command> commands = new ArrayList<>();
+    private final Map<String, Command> commands = new HashMap<>();
 
     public CommandHolder(List<Command> commandList) {
-        commands.addAll(commandList);
+        for (Command command : commandList) {
+            commands.put(command.getName(), command);
+        }
     }
 
     public Optional<Command> getCommandByName(String name) {
-        return commands.stream()
-            .filter(command -> command.getName().equals(name))
-            .findFirst();
+        return Optional.ofNullable(commands.get(name));
     }
 
-    public List<Command> getAllCommands() {
-        return commands;
+    public Collection<Command> getAllCommands() {
+        return commands.values();
     }
 }

@@ -3,14 +3,12 @@ package edu.java.bot.commands.impl;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.commands.Command;
 import edu.java.bot.commands.CommandHolder;
-import java.util.List;
+import java.util.Collection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(1)
 @Slf4j
 public class HelpCommand implements Command {
     private static final String COMMAND_NAME = "/help";
@@ -24,7 +22,7 @@ public class HelpCommand implements Command {
 
     @Override
     public String execute(Update update) {
-        List<Command> commands = commandHolder.getAllCommands();
+        Collection<Command> commands = commandHolder.getAllCommands();
 
         StringBuilder responseBuilder = new StringBuilder();
         responseBuilder.append(COMMAND_LIST_INTRO).append("\n");

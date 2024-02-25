@@ -71,12 +71,10 @@ public class UpdateTrackerBot  implements Bot {
             .map(this::toApiCommand)
             .toArray(BotCommand[]::new);
 
-        try {
-            execute(new SetMyCommands(menuCommands));
-            log.info("Menu commands created successfully.");
-        } catch (Exception e) {
-            log.error("Error creating menu commands", e);
-        }
+
+        execute(new SetMyCommands(menuCommands));
+        log.info("Menu commands created successfully.");
+
     }
 
     private BotCommand toApiCommand(Command command) {

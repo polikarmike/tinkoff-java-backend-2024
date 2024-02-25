@@ -3,11 +3,9 @@ package edu.java.bot.commands.impl;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.commands.Command;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(3)
 @Slf4j
 public class UntrackCommand implements Command {
     private static final String COMMAND_NAME = "/untrack";
