@@ -5,10 +5,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 @Slf4j
 public class LinkUpdaterScheduler {
-    private static final String FIXED_DELAY_EXPRESSION =
-        "#{T(java.time.Duration).parse('PT${app.scheduler.interval}').toMillis()}";
 
-    @Scheduled(fixedDelayString = FIXED_DELAY_EXPRESSION)
+    @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
         log.info("Update method in scheduler");
     }

@@ -8,7 +8,6 @@ public record SOQuestResponse(
     String questId,
     @JsonProperty("link")
     String url,
-    @JsonProperty("title")
     String title,
     @JsonProperty("creation_date")
     OffsetDateTime creationDate,
