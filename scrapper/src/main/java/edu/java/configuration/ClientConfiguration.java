@@ -4,25 +4,27 @@ import edu.java.client.github.GitHubClient;
 import edu.java.client.github.GitHubClientImpl;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.client.stackoverflow.StackOverflowClientImpl;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-@AllArgsConstructor
 public class ClientConfiguration {
+    @Value("${clients.github.host}")
+    private String githubHost;
 
-    private final ApplicationConfig applicationConfig;
+    @Value("${clients.stack.host}")
+    private String stackHost;
 
     @Bean
     public GitHubClient gitHubClient() {
-        return new GitHubClientImpl(applicationConfig.urls().baseUrls().gitHub());
+        return new GitHubClientImpl(githubHost);
     }
 
     @Bean
     public StackOverflowClient stackOverflowClient() {
-        return new StackOverflowClientImpl(applicationConfig.urls().baseUrls().stackOverflow());
+        return new StackOverflowClientImpl(stackHost);
     }
 }
 

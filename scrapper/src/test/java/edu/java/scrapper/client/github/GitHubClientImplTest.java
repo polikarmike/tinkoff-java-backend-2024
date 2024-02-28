@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class GitHubClientImplTest {
-    private static final int WIREMOCK_PORT = 8080;
+    private static final int WIREMOCK_PORT = 8089;
     private static WireMockServer wireMockServer;
 
     @BeforeAll
