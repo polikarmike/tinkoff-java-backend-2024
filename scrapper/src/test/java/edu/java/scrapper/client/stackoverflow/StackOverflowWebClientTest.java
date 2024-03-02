@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import edu.java.client.stackoverflow.StackOverflowClient;
-import edu.java.client.stackoverflow.StackOverflowClientImpl;
+import edu.java.client.stackoverflow.StackOverflowWebClient;
 import edu.java.dto.SOQuestResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class StackOverflowClientImplTest {
+public class StackOverflowWebClientTest {
     private static final int WIREMOCK_PORT = 8080;
     private static WireMockServer wireMockServer;
 
@@ -62,7 +62,7 @@ public class StackOverflowClientImplTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(jsonResponse)));
 
-        StackOverflowClient gitHubClient = new StackOverflowClientImpl("http://localhost:" + WIREMOCK_PORT);
+        StackOverflowClient gitHubClient = new StackOverflowWebClient("http://localhost:" + WIREMOCK_PORT);
 
         // when
         SOQuestResponse response = gitHubClient.fetchQuestion("78056268");

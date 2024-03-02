@@ -3,18 +3,18 @@ package edu.java.client.github;
 import edu.java.dto.GHRepoResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class GitHubClientImpl implements GitHubClient {
+public class GitHubWebClient implements GitHubClient {
     private static final String DEFAULT_BASE_URL = "https://api.github.com/";
     private static final String REPO_ENDPOINT_TEMPLATE = "/repos/{owner}/{repo}";
     private final WebClient webClient;
 
-    public GitHubClientImpl() {
+    public GitHubWebClient() {
         this.webClient = WebClient.builder()
             .baseUrl(DEFAULT_BASE_URL)
             .build();
     }
 
-    public GitHubClientImpl(String baseUrl) {
+    public GitHubWebClient(String baseUrl) {
         this.webClient = WebClient.builder()
             .baseUrl(baseUrl)
             .build();

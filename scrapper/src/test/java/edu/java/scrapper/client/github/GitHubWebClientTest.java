@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import edu.java.client.github.GitHubClient;
-import edu.java.client.github.GitHubClientImpl;
+import edu.java.client.github.GitHubWebClient;
 import edu.java.dto.GHRepoResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,7 +18,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class GitHubClientImplTest {
+public class GitHubWebClientTest {
     private static final int WIREMOCK_PORT = 8089;
     private static WireMockServer wireMockServer;
 
@@ -58,7 +58,7 @@ public class GitHubClientImplTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(jsonResponse)));
 
-        GitHubClient gitHubClient = new GitHubClientImpl("http://localhost:" + WIREMOCK_PORT);
+        GitHubClient gitHubClient = new GitHubWebClient("http://localhost:" + WIREMOCK_PORT);
 
         // when
         GHRepoResponse response = gitHubClient.fetchRepository("octocat", "Hello-World");
