@@ -1,6 +1,6 @@
-package edu.java.client.github;
+package edu.java.scrapper.client.github;
 
-import edu.java.dto.GHRepoResponse;
+import edu.java.scrapper.dto.GHRepoResponse;
 
 public interface GitHubClient {
     GHRepoResponse fetchRepository(String owner, String repoName);

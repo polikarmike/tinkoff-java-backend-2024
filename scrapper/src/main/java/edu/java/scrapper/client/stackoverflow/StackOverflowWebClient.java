@@ -1,6 +1,6 @@
-package edu.java.client.stackoverflow;
+package edu.java.scrapper.client.stackoverflow;
 
-import edu.java.dto.SOQuestResponse;
+import edu.java.scrapper.dto.SOQuestResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class StackOverflowWebClient implements StackOverflowClient {

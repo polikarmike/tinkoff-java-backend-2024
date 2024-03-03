@@ -1,6 +1,6 @@
-package edu.java.client.github;
+package edu.java.scrapper.client.github;
 
-import edu.java.dto.GHRepoResponse;
+import edu.java.scrapper.dto.GHRepoResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class GitHubWebClient implements GitHubClient {

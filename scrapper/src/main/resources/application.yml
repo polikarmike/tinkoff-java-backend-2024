@@ -1,7 +1,7 @@
 app:
   scheduler:
     enable: true
-    interval: 10000
+    interval: 100000
     force-check-delay: 10000
 
 clients:
@@ -9,10 +9,16 @@ clients:
     host: https://api.github.com
   stack:
     host: https://api.stackexchange.com/2.3
+  bot:
+    host: http://localhost:8090
 
 spring:
   application:
     name: scrapper
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
 
 server:
   port: 8080
