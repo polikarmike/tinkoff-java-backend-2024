@@ -1,7 +1,7 @@
 app:
   scheduler:
     enable: true
-    interval: 100000
+    interval: 1000
     force-check-delay: 10000
 
 clients:

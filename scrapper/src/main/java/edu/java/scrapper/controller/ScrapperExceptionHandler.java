@@ -1,8 +1,8 @@
 package edu.java.scrapper.controller;
 
-import edu.java.scrapper.client.exception.MissingChatException;
-import edu.java.scrapper.client.exception.RepeatedLinkAdditionException;
-import edu.java.scrapper.client.exception.RepeatedRegistrationException;
+import edu.java.scrapper.exception.MissingChatException;
+import edu.java.scrapper.exception.RepeatedLinkAdditionException;
+import edu.java.scrapper.exception.RepeatedRegistrationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

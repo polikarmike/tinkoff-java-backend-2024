@@ -1,8 +1,16 @@
 package edu.java.scrapper.client.bot;
 
 import edu.java.common.dto.requests.LinkUpdateRequest;
+import edu.java.common.dto.responses.ApiErrorResponse;
+import edu.java.scrapper.exception.BadRequestException;
+import java.util.List;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+
 
 public class BotWebClient implements BotClient {
     private static final String DEFAULT_BASE_URL = "http://localhost:8080";
@@ -26,7 +34,22 @@ public class BotWebClient implements BotClient {
             .uri("/updates")
             .body(BodyInserters.fromValue(updateRequest))
             .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, this::handle4xxError)
             .bodyToMono(String.class)
             .block();
+    }
+
+    private Mono<? extends Throwable> handle4xxError(ClientResponse clientResponse) {
+        return clientResponse.bodyToMono(ApiErrorResponse.class)
+            .flatMap(errorResponse -> {
+                BadRequestException exception = new BadRequestException(
+                    "Example Description",
+                    "Example Code",
+                    "Example Name",
+                    "Example Message",
+                    List.of("Example stacktrace")
+                );
+                return Mono.error(exception);
+            });
     }
 }

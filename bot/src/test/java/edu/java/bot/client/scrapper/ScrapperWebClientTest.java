@@ -86,10 +86,9 @@ public class ScrapperWebClientTest {
                 .withStatus(200)
                 .withBody("Chat registered")));
 
-        ResponseEntity<String> response = client.registerChat(12345L);
+        String response = client.registerChat(12345L);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Chat registered", response.getBody());
+        assertEquals("Chat registered", response);
     }
 
     @Test
@@ -99,10 +98,10 @@ public class ScrapperWebClientTest {
                 .withStatus(200)
                 .withBody("Chat deleted")));
 
-        ResponseEntity<String> response = client.deleteChat(12345L);
+        String response = client.deleteChat(12345L);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Chat deleted", response.getBody());
+
+        assertEquals("Chat deleted", response);
     }
 
     @AfterEach

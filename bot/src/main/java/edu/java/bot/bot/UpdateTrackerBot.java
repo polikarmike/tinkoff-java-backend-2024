@@ -41,6 +41,7 @@ public class UpdateTrackerBot  implements Bot {
             if (update.message() == null) {
                 return UpdatesListener.CONFIRMED_UPDATES_ALL;
             }
+
             SendMessage response = simpleUserMessageProcessor.process(update);
             execute(response);
         }

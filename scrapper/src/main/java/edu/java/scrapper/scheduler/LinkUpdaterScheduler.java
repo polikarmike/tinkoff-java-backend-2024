@@ -1,10 +1,7 @@
-package edu.java.scrapper.utils;
+package edu.java.scrapper.scheduler;
 
-import edu.java.common.dto.requests.LinkUpdateRequest;
+
 import edu.java.scrapper.client.bot.BotClient;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,13 +20,13 @@ public class LinkUpdaterScheduler {
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
 
-        Long id = 1L;
-        URI url = URI.create("https://www.example.com");
-        String description = "Example description";
-        List<Long> tgChatIds =  new ArrayList<>();
-
-        LinkUpdateRequest exampleRequest = new LinkUpdateRequest(id, url, description, tgChatIds);
-        botClient.sendUpdate(exampleRequest);
+//        Long id = 1L;
+//        URI url = URI.create("https://www.example.com");
+//        String description = "Example description";
+//        List<Long> tgChatIds =  new ArrayList<>();
+//
+//        LinkUpdateRequest exampleRequest = new LinkUpdateRequest(id, url, description, tgChatIds);
+//        botClient.sendUpdate(exampleRequest);
 
         log.info("Update method executed");
 
