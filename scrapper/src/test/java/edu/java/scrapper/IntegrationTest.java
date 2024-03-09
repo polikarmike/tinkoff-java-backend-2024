@@ -1,50 +1,72 @@
 package edu.java.scrapper;
 
+import liquibase.Contexts;
+import liquibase.LabelExpression;
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.core.PostgresDatabase;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.resource.DirectoryResourceAccessor;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.JdbcDatabaseContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import java.sql.SQLException;
 
+@Testcontainers
+public abstract class IntegrationTest {
+    public static PostgreSQLContainer<?> POSTGRES;
 
-public class IntegrationTest extends IntegrationEnvironment {
+    static {
+        POSTGRES = new PostgreSQLContainer<>("postgres:15")
+            .withDatabaseName("scrapper")
+            .withUsername("postgres")
+            .withPassword("postgres");
+        POSTGRES.start();
 
-    @Test
-    public void testDatabaseCreation() {
-        try {
-            Connection connection = DriverManager.getConnection(
-                POSTGRES.getJdbcUrl(),
-                POSTGRES.getUsername(),
-                POSTGRES.getPassword()
-            );
+        runMigrations(POSTGRES);
+    }
 
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery(
-                "SELECT table_name " +
-                    "FROM information_schema.tables " +
-                    "WHERE table_schema = 'public';"
-            );
-
-            List<String> tableNames = new ArrayList<>();
-
-            while (resultSet.next()) {
-                String tableName = resultSet.getString("table_name");
-                tableNames.add(tableName);
-            }
-
-            Assertions.assertTrue(tableNames.contains("link"));
-            Assertions.assertTrue(tableNames.contains("link_chat"));
-            Assertions.assertTrue(tableNames.contains("chat"));
-
-            resultSet.close();
-            statement.close();
-            connection.close();
+    private static void runMigrations(JdbcDatabaseContainer<?> container) {
+        try (Connection connection = createConnection(container)) {
+            Liquibase liquibase = createLiquibase(connection);
+            liquibase.update(new Contexts(), new LabelExpression());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @DynamicPropertySource
+    static void jdbcProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.link", POSTGRES::getJdbcUrl);
+        registry.add("spring.datasource.username", POSTGRES::getUsername);
+        registry.add("spring.datasource.password", POSTGRES::getPassword);
+    }
+
+    private static Connection createConnection(JdbcDatabaseContainer<?> container) throws SQLException {
+        return DriverManager.getConnection(
+            container.getJdbcUrl(),
+            container.getUsername(),
+            container.getPassword()
+        );
+    }
+
+    private static Liquibase createLiquibase(Connection connection) throws FileNotFoundException {
+        Database database = new PostgresDatabase();
+        database.setConnection(new JdbcConnection(connection));
+
+        Path changelogPath =  Paths.get("").toAbsolutePath().getParent().resolve("migrations");
+
+        return new Liquibase(
+            "master.xml",
+            new DirectoryResourceAccessor(changelogPath),
+            database
+        );
     }
 }
