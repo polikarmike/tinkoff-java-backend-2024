@@ -1,33 +1,50 @@
 package edu.java.scrapper;
 
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-@Testcontainers
-public abstract class IntegrationTest {
-    public static PostgreSQLContainer<?> POSTGRES;
 
-    static {
-        POSTGRES = new PostgreSQLContainer<>("postgres:15")
-            .withDatabaseName("scrapper")
-            .withUsername("postgres")
-            .withPassword("postgres");
-        POSTGRES.start();
+public class IntegrationTest extends IntegrationEnvironment {
 
-        runMigrations(POSTGRES);
-    }
+    @Test
+    public void testDatabaseCreation() {
+        try {
+            Connection connection = DriverManager.getConnection(
+                POSTGRES.getJdbcUrl(),
+                POSTGRES.getUsername(),
+                POSTGRES.getPassword()
+            );
 
-    private static void runMigrations(JdbcDatabaseContainer<?> c) {
-        // ...
-    }
+            Statement statement = connection.createStatement();
 
-    @DynamicPropertySource
-    static void jdbcProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.link", POSTGRES::getJdbcUrl);
-        registry.add("spring.datasource.username", POSTGRES::getUsername);
-        registry.add("spring.datasource.password", POSTGRES::getPassword);
+            ResultSet resultSet = statement.executeQuery(
+                "SELECT table_name " +
+                    "FROM information_schema.tables " +
+                    "WHERE table_schema = 'public';"
+            );
+
+            List<String> tableNames = new ArrayList<>();
+
+            while (resultSet.next()) {
+                String tableName = resultSet.getString("table_name");
+                tableNames.add(tableName);
+            }
+
+            Assertions.assertTrue(tableNames.contains("link"));
+            Assertions.assertTrue(tableNames.contains("link_chat"));
+            Assertions.assertTrue(tableNames.contains("chat"));
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
