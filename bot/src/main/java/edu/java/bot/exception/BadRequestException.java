@@ -1,44 +1,13 @@
 package edu.java.bot.exception;
 
-import java.util.List;
+import edu.java.common.dto.responses.ApiErrorResponse;
+import lombok.Getter;
 
-public class BadRequestException extends RuntimeException {
-    private final String description;
-    private final String code;
-    private final String exceptionName;
-    private final String exceptionMessage;
-    private final List<String> stacktrace;
+@Getter public class BadRequestException extends RuntimeException {
+    private final ApiErrorResponse apiErrorResponse;
 
-    public BadRequestException(String description,
-        String code,
-        String exceptionName,
-        String exceptionMessage,
-        List<String> stacktrace) {
-        super(description);
-        this.description = description;
-        this.code = code;
-        this.exceptionName = exceptionName;
-        this.exceptionMessage = exceptionMessage;
-        this.stacktrace = stacktrace;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getExceptionName() {
-        return exceptionName;
-    }
-
-    public String getExceptionMessage() {
-        return exceptionMessage;
-    }
-
-    public List<String> getStacktrace() {
-        return stacktrace;
+    public BadRequestException(ApiErrorResponse apiErrorResponse) {
+        super(apiErrorResponse.description());
+        this.apiErrorResponse = apiErrorResponse;
     }
 }

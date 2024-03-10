@@ -6,7 +6,6 @@ import edu.java.common.dto.requests.RemoveLinkRequest;
 import edu.java.common.dto.responses.ApiErrorResponse;
 import edu.java.common.dto.responses.ListLinksResponse;
 import java.net.URI;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
@@ -104,14 +103,15 @@ public class ScrapperWebClient implements ScrapperClient {
 
     private Mono<? extends Throwable> handle4xxError(ClientResponse clientResponse) {
         return clientResponse.bodyToMono(ApiErrorResponse.class)
-            .flatMap(errorResponse -> {
-                BadRequestException exception = new BadRequestException(
-                    "Example Description",
-                    "Example Code",
-                    "Example Name",
-                    "Example Message",
-                        List.of("Example stacktrace")
-                );
+            .flatMap(body -> {
+                ApiErrorResponse errorResponse =
+                    new ApiErrorResponse(body.description(),
+                        body.code(),
+                        body.toString(),
+                        body.exceptionName(),
+                        body.stacktrace());
+
+                BadRequestException exception = new BadRequestException(errorResponse);
                 return Mono.error(exception);
             });
     }

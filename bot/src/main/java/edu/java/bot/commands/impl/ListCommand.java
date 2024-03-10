@@ -3,13 +3,13 @@ package edu.java.bot.commands.impl;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.client.scrapper.ScrapperClient;
 import edu.java.bot.commands.Command;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ListCommand implements Command {
     private static final String COMMAND_NAME = "/list";
     private static final String COMMAND_DESCRIPTION = "Отобразить список отслеживаемых ссылок";

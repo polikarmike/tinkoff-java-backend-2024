@@ -20,7 +20,5 @@ public class SimpleUserMessageProcessor implements UserMessageProcessor {
         String message = optionalCommand.map(command -> command.execute(update)).orElse(COMMAND_NOT_FOUND_MESSAGE);
 
         return new SendMessage(update.message().chat().id(), message);
-
-
     }
 }

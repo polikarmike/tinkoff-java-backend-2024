@@ -1,22 +1,21 @@
-package edu.java.scrapper.controller;
+package edu.java.bot.controller;
 
+import edu.java.bot.exception.BadRequestException;
 import edu.java.common.dto.responses.ApiErrorResponse;
-import edu.java.scrapper.exception.BadRequestException;
-import edu.java.scrapper.exception.MissingChatException;
-import edu.java.scrapper.exception.RepeatedLinkAdditionException;
-import edu.java.scrapper.exception.RepeatedRegistrationException;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+@Component
 @RestControllerAdvice
-public class ScrapperExceptionHandler {
+public class BotExceptionHandler {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrorResponse handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -29,34 +28,16 @@ public class ScrapperExceptionHandler {
         return createErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex);
     }
 
-    @ExceptionHandler(RepeatedRegistrationException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiErrorResponse handleRepeatedRegistrationException(RepeatedRegistrationException ex) {
-        return createErrorResponse(HttpStatus.CONFLICT.toString(), ex);
-    }
-
-    @ExceptionHandler(RepeatedLinkAdditionException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiErrorResponse handleRepeatedLinkAdditionException(RepeatedLinkAdditionException ex) {
-        return createErrorResponse(HttpStatus.CONFLICT.toString(), ex);
-    }
-
-    @ExceptionHandler(MissingChatException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiErrorResponse handleMssingChatException(MissingChatException ex) {
-        return createErrorResponse(HttpStatus.NOT_FOUND.toString(), ex);
-    }
-
-    @ExceptionHandler(NoResourceFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiErrorResponse handleNoResourceFoundException(NoResourceFoundException ex) {
-        return createErrorResponse(ex.getStatusCode().toString(), ex);
-    }
-
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiErrorResponse handleNoHandlerFoundException(NoHandlerFoundException ex) {
         return createErrorResponse(ex.getStatusCode().toString(), ex);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiErrorResponse handleException(Exception ex) {
+        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), ex);
     }
 
     private ApiErrorResponse createErrorResponse(String statusCode, Exception ex) {
