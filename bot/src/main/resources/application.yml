@@ -7,6 +7,14 @@ spring:
   jackson:
     time-zone: UTC
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
+clients:
+  scrapper:
+    host: http://localhost:8080
+
 server:
   port: 8090
 
