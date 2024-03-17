@@ -14,7 +14,7 @@ public record GHRepoResponse(
     OffsetDateTime createdAt,
 
     @JsonProperty("pushed_at")
-    OffsetDateTime pushedAt,
+    OffsetDateTime lastActivityDate,
 
     @JsonProperty("updated_at")
     OffsetDateTime updateAt) {

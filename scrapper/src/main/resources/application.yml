@@ -15,6 +15,13 @@ clients:
 spring:
   application:
     name: scrapper
+  liquibase:
+    enabled: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
 
 springdoc:
   swagger-ui:

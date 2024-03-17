@@ -20,7 +20,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Testcontainers
-public abstract class IntegrationTest {
+public abstract class IntegrationEnvironment {
     public static PostgreSQLContainer<?> POSTGRES;
 
     static {

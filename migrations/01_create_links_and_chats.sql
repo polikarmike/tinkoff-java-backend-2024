@@ -12,14 +12,12 @@ create table Link
 
 create table Chat
 (
-    id              bigint generated always as identity,
-    name            text                     not null,
+    id              bigint                   not null,
 
     created_at      timestamp with time zone not null,
-    created_by      text                     not null,
 
     primary key (id),
-    unique (name)
+    unique (id)
 );
 
 create table Link_Chat

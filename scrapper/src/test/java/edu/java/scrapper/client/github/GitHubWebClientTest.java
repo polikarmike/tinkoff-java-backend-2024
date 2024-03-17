@@ -65,7 +65,7 @@ public class GitHubWebClientTest {
         assertNotNull(response);
         assertEquals("Hello-World", response.repoName());
         assertEquals("https://github.com/octocat/Hello-World", response.link());
-        assertEquals(OffsetDateTime.parse("2011-01-26T19:06:43Z"), response.pushedAt());
+        assertEquals(OffsetDateTime.parse("2011-01-26T19:06:43Z"), response.lastActivityDate());
         assertEquals(OffsetDateTime.parse("2011-01-26T19:01:12Z"), response.createdAt());
         assertEquals(OffsetDateTime.parse("2022-02-24T16:40:42Z"), response.updateAt());
     }
