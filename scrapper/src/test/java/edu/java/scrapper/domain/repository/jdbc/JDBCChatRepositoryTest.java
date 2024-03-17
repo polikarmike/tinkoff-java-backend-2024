@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.domain.repository.jdbc;
 
 import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.dto.entity.Chat;
@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class ChatDAOTest extends IntegrationEnvironment {
+class JDBCChatRepositoryTest extends IntegrationEnvironment {
 
     @Autowired
-    private ChatDAO chatRepository;
+    private JDBCChatRepository JDBCChatRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -34,7 +34,7 @@ class ChatDAOTest extends IntegrationEnvironment {
         chat.setId(1L);
         chat.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
 
-        chatRepository.add(chat);
+        JDBCChatRepository.add(chat);
 
         assertEquals(1, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Chat WHERE id = ?", Long.class, chat.getId()));
     }
@@ -47,13 +47,13 @@ class ChatDAOTest extends IntegrationEnvironment {
         Chat chat = new Chat();
         chat.setId(1L);
         chat.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
-        chatRepository.add(chat);
+        JDBCChatRepository.add(chat);
 
         Long id = chat.getId();
 
         assertEquals(1, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Chat WHERE id = ?", Long.class, id));
 
-        chatRepository.remove(id);
+        JDBCChatRepository.remove(id);
 
         assertEquals(0, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Chat WHERE id = ?", Long.class, id));
     }
@@ -66,11 +66,11 @@ class ChatDAOTest extends IntegrationEnvironment {
         Chat chat = new Chat();
         chat.setId(12345L);
         chat.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
-        chatRepository.add(chat);
+        JDBCChatRepository.add(chat);
 
         Long id = chat.getId();
 
-        Chat retrievedChat = chatRepository.getById(id).get();
+        Chat retrievedChat = JDBCChatRepository.getById(id).get();
 
 
         assertNotNull(retrievedChat);
@@ -86,15 +86,15 @@ class ChatDAOTest extends IntegrationEnvironment {
         chat1.setId(1L);
         chat1.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
 
-        chatRepository.add(chat1);
+        JDBCChatRepository.add(chat1);
 
         Chat chat2 = new Chat();
         chat2.setId(2L);
         chat2.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
 
-        chatRepository.add(chat2);
+        JDBCChatRepository.add(chat2);
 
-        List<Chat> chats = chatRepository.findAll();
+        List<Chat> chats = JDBCChatRepository.findAll();
 
         assertEquals(2, chats.size());
 

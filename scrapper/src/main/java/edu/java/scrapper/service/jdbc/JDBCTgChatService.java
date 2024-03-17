@@ -1,6 +1,6 @@
 package edu.java.scrapper.service.jdbc;
 
-import edu.java.scrapper.dao.repository.ChatDAO;
+import edu.java.scrapper.domain.repository.jdbc.JDBCChatRepository;
 import edu.java.scrapper.dto.entity.Chat;
 import edu.java.scrapper.exception.MissingChatException;
 import edu.java.scrapper.exception.RepeatedRegistrationException;
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class JDBCTgChatService implements TgChatService {
-    private final ChatDAO chatRepository;
+    private final JDBCChatRepository jdbcChatRepository;
     private static final String MISSING_CHAT_ERROR_MESSAGE = "Chat does not exist";
     private static final String REPEATED_CHAT_ADDITION_ERROR_MESSAGE = "Chat already exists";
 
     @Override
     public void register(long tgChatId) {
-        Optional<Chat> existingChat = chatRepository.getById(tgChatId);
+        Optional<Chat> existingChat = jdbcChatRepository.getById(tgChatId);
         if (existingChat.isPresent()) {
             throw new RepeatedRegistrationException(REPEATED_CHAT_ADDITION_ERROR_MESSAGE);
         }
@@ -29,16 +29,16 @@ public class JDBCTgChatService implements TgChatService {
         chat.setId(tgChatId);
         chat.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
 
-        chatRepository.add(chat);
+        jdbcChatRepository.add(chat);
     }
 
     @Override
     public void unregister(long tgChatId) {
-        Optional<Chat> existingChat = chatRepository.getById(tgChatId);
+        Optional<Chat> existingChat = jdbcChatRepository.getById(tgChatId);
         if (existingChat.isEmpty()) {
             throw new MissingChatException(MISSING_CHAT_ERROR_MESSAGE);
         }
 
-        chatRepository.remove(tgChatId);
+        jdbcChatRepository.remove(tgChatId);
     }
 }

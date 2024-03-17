@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.domain.repository.jdbc;
 
 import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.dto.entity.Chat;
@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class ChatLinkDAOTest extends IntegrationEnvironment {
+class JDBCChatLinkRepositoryTest extends IntegrationEnvironment {
 
     @Autowired
-    private ChatLinkDAO chatLinkRepository;
+    private JDBCChatLinkRepository JDBCChatLinkRepository;
     @Autowired
-    private ChatDAO chatRepository;
+    private JDBCChatRepository JDBCChatRepository;
     @Autowired
-    private LinkDAO linkRepository;
+    private JDBCLinkRepository JDBCLinkRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -42,15 +42,15 @@ class ChatLinkDAOTest extends IntegrationEnvironment {
         Chat exampleChat = new Chat();
         exampleChat.setId(chatId);
         exampleChat.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
-        chatRepository.add(exampleChat);
+        JDBCChatRepository.add(exampleChat);
 
         URI exampleURI = new URI("https://example.com");
-        linkRepository.add(exampleURI);
-        Long linkId = linkRepository.getLinkByUri(exampleURI).get().getId();
+        JDBCLinkRepository.add(exampleURI);
+        Long linkId = JDBCLinkRepository.getLinkByUri(exampleURI).get().getId();
 
-        chatLinkRepository.add(chatId, linkId);
+        JDBCChatLinkRepository.add(chatId, linkId);
 
-        List<Long> retrievedLinkIds = chatLinkRepository.getLinkIdsByChatId(1L);
+        List<Long> retrievedLinkIds = JDBCChatLinkRepository.getLinkIdsByChatId(1L);
         assertTrue(retrievedLinkIds.contains(linkId));
     }
 
@@ -64,16 +64,16 @@ class ChatLinkDAOTest extends IntegrationEnvironment {
         Chat exampleChat = new Chat();
         exampleChat.setId(chatId);
         exampleChat.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
-        chatRepository.add(exampleChat);
+        JDBCChatRepository.add(exampleChat);
 
         URI exampleURI = new URI("https://example.com");
-        linkRepository.add(exampleURI);
-        Long linkId = linkRepository.getLinkByUri(exampleURI).get().getId();
+        JDBCLinkRepository.add(exampleURI);
+        Long linkId = JDBCLinkRepository.getLinkByUri(exampleURI).get().getId();
 
-        chatLinkRepository.add(chatId, linkId);
-        chatLinkRepository.remove(chatId, linkId);
+        JDBCChatLinkRepository.add(chatId, linkId);
+        JDBCChatLinkRepository.remove(chatId, linkId);
 
-        List<Long> retrievedLinkIds = chatLinkRepository.getLinkIdsByChatId(chatId);
+        List<Long> retrievedLinkIds = JDBCChatLinkRepository.getLinkIdsByChatId(chatId);
 
         Assertions.assertFalse(retrievedLinkIds.contains(linkId));
     }
@@ -88,20 +88,20 @@ class ChatLinkDAOTest extends IntegrationEnvironment {
         Chat exampleChat = new Chat();
         exampleChat.setId(chatId);
         exampleChat.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
-        chatRepository.add(exampleChat);
+        JDBCChatRepository.add(exampleChat);
 
         URI exampleURI1 = new URI("https://example.com");
-        linkRepository.add(exampleURI1);
-        Long linkId1 = linkRepository.getLinkByUri(exampleURI1).get().getId();
+        JDBCLinkRepository.add(exampleURI1);
+        Long linkId1 = JDBCLinkRepository.getLinkByUri(exampleURI1).get().getId();
 
         URI exampleURI2 = new URI("https://example2.com");
-        linkRepository.add(exampleURI2);
-        Long linkId2 = linkRepository.getLinkByUri(exampleURI2).get().getId();
+        JDBCLinkRepository.add(exampleURI2);
+        Long linkId2 = JDBCLinkRepository.getLinkByUri(exampleURI2).get().getId();
 
-        chatLinkRepository.add(chatId, linkId1);
-        chatLinkRepository.add(chatId, linkId2);
+        JDBCChatLinkRepository.add(chatId, linkId1);
+        JDBCChatLinkRepository.add(chatId, linkId2);
 
-        List<Long> retrievedLinkIds = chatLinkRepository.getLinkIdsByChatId(chatId);
+        List<Long> retrievedLinkIds = JDBCChatLinkRepository.getLinkIdsByChatId(chatId);
 
         assertEquals(2, retrievedLinkIds.size());
         assertTrue(retrievedLinkIds.contains(linkId1));
@@ -118,23 +118,23 @@ class ChatLinkDAOTest extends IntegrationEnvironment {
         Chat exampleChat1 = new Chat();
         exampleChat1.setId(chatId1);
         exampleChat1.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
-        chatRepository.add(exampleChat1);
+        JDBCChatRepository.add(exampleChat1);
 
         Long chatId2 = 2L;
 
         Chat exampleChat2 = new Chat();
         exampleChat2.setId(chatId2);
         exampleChat2.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
-        chatRepository.add(exampleChat2);
+        JDBCChatRepository.add(exampleChat2);
 
         URI exampleURI = new URI("https://example.com");
-        linkRepository.add(exampleURI);
-        Long linkId = linkRepository.getLinkByUri(exampleURI).get().getId();
+        JDBCLinkRepository.add(exampleURI);
+        Long linkId = JDBCLinkRepository.getLinkByUri(exampleURI).get().getId();
 
-        chatLinkRepository.add(chatId1, linkId);
-        chatLinkRepository.add(chatId2, linkId);
+        JDBCChatLinkRepository.add(chatId1, linkId);
+        JDBCChatLinkRepository.add(chatId2, linkId);
 
-        List<Long> retrievedChatIds = chatLinkRepository.getChatIdsByLinkId(linkId);
+        List<Long> retrievedChatIds = JDBCChatLinkRepository.getChatIdsByLinkId(linkId);
 
         assertEquals(2, retrievedChatIds.size());
         assertTrue(retrievedChatIds.contains(chatId1));
