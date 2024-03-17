@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.domain.repository.jdbc;
 
 import edu.java.scrapper.dto.entity.Chat;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatDAO {
+public class JDBCChatRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

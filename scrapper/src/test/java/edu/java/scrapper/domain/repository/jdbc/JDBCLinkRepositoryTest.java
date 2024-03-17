@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;//package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.domain.repository.jdbc;//package edu.java.scrapper.dao.repository;
 
 import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.dto.entity.Link;
@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class LinkDAOTest extends IntegrationEnvironment {
+class JDBCLinkRepositoryTest extends IntegrationEnvironment {
 
     @Autowired
-    private LinkDAO linkRepository;
+    private JDBCLinkRepository JDBCLinkRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -36,7 +36,7 @@ class LinkDAOTest extends IntegrationEnvironment {
     void addTest() throws URISyntaxException {
         URI exampleURI = new URI("https://example.com");
 
-        linkRepository.add(exampleURI);
+        JDBCLinkRepository.add(exampleURI);
 
         assertEquals(1, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM link", Long.class));
     }
@@ -47,11 +47,11 @@ class LinkDAOTest extends IntegrationEnvironment {
     @Rollback
     void removeTest() throws URISyntaxException {
         URI exampleURI = new URI("https://example.com");
-        linkRepository.add(exampleURI);
+        JDBCLinkRepository.add(exampleURI);
 
         assertEquals(1, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Link WHERE url = ?", Long.class, exampleURI.toString()));
 
-        linkRepository.remove(exampleURI);
+        JDBCLinkRepository.remove(exampleURI);
 
         assertEquals(0, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Link WHERE url = ?", Long.class, exampleURI.toString()));
     }
@@ -62,12 +62,12 @@ class LinkDAOTest extends IntegrationEnvironment {
     @Rollback
     void findAllTest() throws URISyntaxException {
         URI exampleURI = new URI("https://example.com");
-        linkRepository.add(exampleURI);
+        JDBCLinkRepository.add(exampleURI);
 
         URI exampleURI2 = new URI("https://example2.com");
-        linkRepository.add(exampleURI2);
+        JDBCLinkRepository.add(exampleURI2);
 
-        List<Link> links = linkRepository.findAll();
+        List<Link> links = JDBCLinkRepository.findAll();
 
         assertEquals(2, links.size());
 
@@ -81,9 +81,9 @@ class LinkDAOTest extends IntegrationEnvironment {
     @Rollback
     void getLinkByIdTest() throws URISyntaxException {
         URI exampleURI = new URI("https://example.com");
-        Link addedLink = linkRepository.add(exampleURI);
+        Link addedLink = JDBCLinkRepository.add(exampleURI);
 
-        Optional<Link> retrievedLink = linkRepository.getLinkById(addedLink.getId());
+        Optional<Link> retrievedLink = JDBCLinkRepository.getLinkById(addedLink.getId());
 
         assertTrue(retrievedLink.isPresent());
         assertEquals(addedLink, retrievedLink.get());
@@ -95,9 +95,9 @@ class LinkDAOTest extends IntegrationEnvironment {
     @Rollback
     void getLinkByUriTest() throws URISyntaxException {
         URI exampleURI = new URI("https://example.com");
-        Link addedLink = linkRepository.add(exampleURI);
+        Link addedLink = JDBCLinkRepository.add(exampleURI);
 
-        Optional<Link> retrievedLink = linkRepository.getLinkByUri(exampleURI);
+        Optional<Link> retrievedLink = JDBCLinkRepository.getLinkByUri(exampleURI);
 
         assertTrue(retrievedLink.isPresent());
         assertEquals(addedLink, retrievedLink.get());
@@ -109,13 +109,13 @@ class LinkDAOTest extends IntegrationEnvironment {
     @Rollback
     void updateLastUpdatedTimeTest() throws URISyntaxException {
         URI exampleURI = new URI("https://example.com");
-        Link addedLink = linkRepository.add(exampleURI);
+        Link addedLink = JDBCLinkRepository.add(exampleURI);
 
         OffsetDateTime initialLastUpdatedAt = addedLink.getLastUpdatedAt();
 
-        linkRepository.updateLastUpdatedTime(addedLink.getId());
+        JDBCLinkRepository.updateLastUpdatedTime(addedLink.getId());
 
-        Link updatedLink = linkRepository.getLinkById(addedLink.getId()).orElse(null);
+        Link updatedLink = JDBCLinkRepository.getLinkById(addedLink.getId()).orElse(null);
 
         assertNotNull(updatedLink);
         assertTrue(initialLastUpdatedAt.isBefore(updatedLink.getLastUpdatedAt()));
@@ -127,15 +127,15 @@ class LinkDAOTest extends IntegrationEnvironment {
     @Rollback
     void findByLastUpdateBeforeTest() throws URISyntaxException {
         URI exampleURI = new URI("https://example.com");
-        Link addedLink = linkRepository.add(exampleURI);
+        Link addedLink = JDBCLinkRepository.add(exampleURI);
 
         OffsetDateTime thresholdTime = OffsetDateTime.now().minusDays(1);
 
-        List<Link> outdatedLinks = linkRepository.findByLastUpdateBefore(thresholdTime);
+        List<Link> outdatedLinks = JDBCLinkRepository.findByLastUpdateBefore(thresholdTime);
 
         assertTrue(outdatedLinks.isEmpty());
 
-        outdatedLinks = linkRepository.findByLastUpdateBefore(OffsetDateTime.now());
+        outdatedLinks = JDBCLinkRepository.findByLastUpdateBefore(OffsetDateTime.now());
 
         Assertions.assertFalse(outdatedLinks.isEmpty());
         assertTrue(outdatedLinks.contains(addedLink));
