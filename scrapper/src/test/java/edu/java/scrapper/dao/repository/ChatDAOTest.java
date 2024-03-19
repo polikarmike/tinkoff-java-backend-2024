@@ -2,13 +2,19 @@ package edu.java.scrapper.dao.repository;
 
 import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.dto.entity.Chat;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -25,11 +31,12 @@ class ChatDAOTest extends IntegrationEnvironment {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
     @Test
     @DisplayName("Добавление чата")
     @Transactional
     @Rollback
-    void addTest() {
+    void addTest() throws SQLException {
         Chat chat = new Chat();
         chat.setId(1L);
         chat.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.UTC));
