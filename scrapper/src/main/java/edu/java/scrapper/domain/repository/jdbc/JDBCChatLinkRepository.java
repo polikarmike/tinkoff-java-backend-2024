@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.domain.repository.jdbc;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatLinkDAO {
+public class JDBCChatLinkRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

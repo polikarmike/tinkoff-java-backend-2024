@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.domain.repository.jdbc;
 
 import edu.java.scrapper.dto.entity.Link;
 import java.net.URI;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class LinkDAO {
+public class JDBCLinkRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
