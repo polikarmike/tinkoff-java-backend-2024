@@ -16,8 +16,7 @@ create table Chat
 
     created_at      timestamp with time zone not null,
 
-    primary key (id),
-    unique (id)
+    primary key (id)
 );
 
 create table Link_Chat
