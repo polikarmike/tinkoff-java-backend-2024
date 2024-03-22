@@ -2,6 +2,8 @@ package edu.java.scrapper.controller;
 
 import edu.java.common.dto.responses.ApiErrorResponse;
 import edu.java.scrapper.exception.BadRequestException;
+import edu.java.scrapper.exception.InvalidLinkException;
+import edu.java.scrapper.exception.LinkNotFoundException;
 import edu.java.scrapper.exception.MissingChatException;
 import edu.java.scrapper.exception.RepeatedLinkAdditionException;
 import edu.java.scrapper.exception.RepeatedRegistrationException;
@@ -29,11 +31,18 @@ public class ScrapperExceptionHandler {
         return createErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex);
     }
 
+    @ExceptionHandler(InvalidLinkException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handleInvalidLinkException(InvalidLinkException ex) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex);
+    }
+
     @ExceptionHandler(RepeatedRegistrationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiErrorResponse handleRepeatedRegistrationException(RepeatedRegistrationException ex) {
         return createErrorResponse(HttpStatus.CONFLICT.toString(), ex);
     }
+
 
     @ExceptionHandler(RepeatedLinkAdditionException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -44,6 +53,12 @@ public class ScrapperExceptionHandler {
     @ExceptionHandler(MissingChatException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiErrorResponse handleMssingChatException(MissingChatException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND.toString(), ex);
+    }
+
+    @ExceptionHandler(LinkNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrorResponse handleLinkNotFoundException(LinkNotFoundException ex) {
         return createErrorResponse(HttpStatus.NOT_FOUND.toString(), ex);
     }
 

@@ -3,11 +3,13 @@ package edu.java.scrapper.client.stackoverflow;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import edu.java.scrapper.dto.SOQuestResponse;
+import edu.java.scrapper.dto.stackoverflow.SQQuestAnswerResponse;
+import edu.java.scrapper.dto.stackoverflow.SOQuestResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -18,7 +20,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
+@Component
 public class StackOverflowWebClientTest {
     private static final int WIREMOCK_PORT = 8080;
     private static WireMockServer wireMockServer;
@@ -41,16 +43,13 @@ public class StackOverflowWebClientTest {
         // given
         String jsonResponse = """
             {
-                "is_answered": false,
-                "view_count": 1,
-                "answer_count": 0,
-                "score": 0,
-                "last_activity_date": 1708870512,
-                "creation_date": 1708870512,
-                "question_id": 78056268,
-                "content_license": "CC BY-SA 4.0",
-                "link": "https://stackoverflow.com/questions/78056268/debugging-rust-lifetimes-how-to-check-which-scope-each-elided-lifetime-is-relat",
-                "title": "Debugging rust lifetimes: how to check which scope each elided lifetime is related to?"
+              "items": [
+                {
+                  "question_id": 123456,
+                  "link": "https://stackoverflow.com/questions/123456",
+                  "last_activity_date": "1708870512"
+                }
+              ]
             }
             """;
 
@@ -67,19 +66,56 @@ public class StackOverflowWebClientTest {
 
         // then
         assertNotNull(response);
-        assertEquals("78056268", response.questId());
 
-        String expectedLink = "https://stackoverflow.com/questions/78056268/debugging-rust-lifetimes-how-to-check-which-scope-each-elided-lifetime-is-relat";
-        assertEquals(expectedLink, response.url());
+        SOQuestResponse.ItemResponse itemResponse = response.items().get(0);
 
-        String expectedTitle = "Debugging rust lifetimes: how to check which scope each elided lifetime is related to?";
-        assertEquals(expectedTitle, response.title());
+        assertEquals("123456", itemResponse.id().toString());
 
-        OffsetDateTime expectedCreationDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1708870512), ZoneOffset.UTC);
+        assertEquals("https://stackoverflow.com/questions/123456", itemResponse.url());
+
         OffsetDateTime expectedLastActivityDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1708870512), ZoneOffset.UTC);
 
+        assertEquals(expectedLastActivityDate, itemResponse.lastUpdateTime());
+    }
 
-        assertEquals(expectedCreationDate, response.creationDate());
-        assertEquals(expectedLastActivityDate, response.lastActivityDate());
+    @Test
+    @DisplayName("Тестирование получения ответа на вопроса")
+    public void fetchAnswerTest(){
+        // given
+        String jsonResponse = """
+            {
+              "items": [
+                {
+                  "last_activity_date": "1708870512"
+                },
+                {
+                  "last_activity_date": "1538230242"
+                }
+              ]
+            }
+            """;
+
+        stubFor(get(urlEqualTo("/questions/78056268/answers?site=stackoverflow"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody(jsonResponse)));
+
+        StackOverflowClient gitHubClient = new StackOverflowWebClient("http://localhost:" + WIREMOCK_PORT);
+
+        // when
+        SQQuestAnswerResponse response = gitHubClient.fetchAnswers("78056268");
+
+        // then
+        assertNotNull(response);
+
+        SOQuestResponse.ItemResponse itemResponse1 = response.items().get(0);
+        SOQuestResponse.ItemResponse itemResponse2 = response.items().get(1);
+
+        OffsetDateTime expectedLastActivityDate1 = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1708870512), ZoneOffset.UTC);
+        OffsetDateTime expectedLastActivityDate2 = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1538230242), ZoneOffset.UTC);
+
+        assertEquals(expectedLastActivityDate1, itemResponse1.lastUpdateTime());
+        assertEquals(expectedLastActivityDate2, itemResponse2.lastUpdateTime());
     }
 }
