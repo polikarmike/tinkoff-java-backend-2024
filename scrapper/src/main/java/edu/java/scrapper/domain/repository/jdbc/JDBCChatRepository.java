@@ -1,5 +1,6 @@
 package edu.java.scrapper.domain.repository.jdbc;
 
+import edu.java.scrapper.domain.repository.ChatRepository;
 import edu.java.scrapper.dto.entity.Chat;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,37 +8,54 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
+import edu.java.scrapper.exception.MissingChatException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
 @RequiredArgsConstructor
-public class JDBCChatRepository {
+@Qualifier("JDBCChatRepository")
+@Primary
+public class JDBCChatRepository implements ChatRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public void add(Chat chat) {
+    @Override
+    public Chat add(Chat chat) {
         jdbcTemplate.update("INSERT INTO Chat (id, created_at) VALUES (?, ?)",
-            chat.getId().intValue(), chat.getCreatedAt());
+            chat.getId(), chat.getCreatedAt());
+        return getById(chat.getId()).orElseThrow(() -> new MissingChatException("No Chat"));
     }
 
-    public void remove(Long id) {
+    @Override
+    public Chat remove(Long id) {
+        Chat deletedChat = getById(id).orElseThrow(() -> new MissingChatException("No Chat"));
         jdbcTemplate.update("DELETE FROM Chat WHERE id = ?", id);
+        return deletedChat;
     }
 
+    @Override
     public List<Chat> findAll() {
-        return jdbcTemplate.query("SELECT * FROM Chat",
+        return jdbcTemplate.query(
+            "SELECT * FROM Chat",
             (rs, rowNum) -> mapRowToChat(rs));
     }
 
+    @Override
     public Optional<Chat> getById(Long id) {
-        try {
-            return jdbcTemplate.queryForObject("SELECT * FROM Chat WHERE id = ?",
-                new Object[]{id},
-                (rs, rowNum) -> Optional.of(mapRowToChat(rs)));
-        } catch (Exception e) {
+        try{
+            return jdbcTemplate.queryForObject(
+                "SELECT * FROM Chat WHERE id = ?",
+                (rs, rowNum) -> Optional.of(mapRowToChat(rs)),
+                id
+            );
+        }
+        catch (Exception e) {
             return Optional.empty();
         }
 

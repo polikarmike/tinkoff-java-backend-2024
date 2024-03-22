@@ -55,8 +55,8 @@ public class LinkController {
 
         log.info("Запрос на добавление ссылки");
 
-        linkService.add(tgChatId, request.link());
-        return new LinkResponse(tgChatId, request.link());
+        Link link = linkService.add(tgChatId, request.link());
+        return new LinkResponse(tgChatId, link.getUri());
     }
 
     @Operation(summary = "Удалить ссылку", description = "Удаляет указанную ссылку")
@@ -68,7 +68,7 @@ public class LinkController {
 
         log.info("Запрос на удаление ссылки");
 
-        linkService.remove(tgChatId, request.link());
-        return new LinkResponse(tgChatId, request.link());
+        Link link = linkService.remove(tgChatId, request.link());
+        return new LinkResponse(tgChatId, link.getUri());
     }
 }
