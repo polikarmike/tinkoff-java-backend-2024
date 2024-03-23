@@ -109,8 +109,8 @@ public class StackOverflowWebClientTest {
         // then
         assertNotNull(response);
 
-        SOQuestResponse.ItemResponse itemResponse1 = response.items().get(0);
-        SOQuestResponse.ItemResponse itemResponse2 = response.items().get(1);
+        SQQuestAnswerResponse.ItemResponse itemResponse1 = response.items().get(0);
+        SQQuestAnswerResponse.ItemResponse itemResponse2 = response.items().get(1);
 
         OffsetDateTime expectedLastActivityDate1 = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1708870512), ZoneOffset.UTC);
         OffsetDateTime expectedLastActivityDate2 = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1538230242), ZoneOffset.UTC);
