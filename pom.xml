@@ -239,6 +239,13 @@
                             <goals>
                                 <goal>report</goal>
                             </goals>
+                            <configuration>
+                                <excludes>
+                                    <!-- Исключаем папки -->
+                                    <exclude>**/scrapper/src/main/java/edu/java/scrapper/domain/jooq/**</exclude>
+                                    <exclude>**/scrapper-jooq/**</exclude>
+                                </excludes>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
