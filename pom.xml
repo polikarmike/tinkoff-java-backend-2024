@@ -242,8 +242,8 @@
                             <configuration>
                                 <excludes>
                                     <!-- Исключаем папки -->
-                                    <exclude>**/scrapper/src/main/java/edu/java/scrapper/domain/jooq/**</exclude>
-                                    <exclude>**/scrapper-jooq/**</exclude>
+                                    <exclude>edu/java/scrapper/domain/jooq/**</exclude>
+                                    <exclude>edu/java/generator/**</exclude>
                                 </excludes>
                             </configuration>
                         </execution>
