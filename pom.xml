@@ -49,6 +49,7 @@
         <module>bot</module>
         <module>scrapper</module>
         <module>shared-dto</module>
+        <module>scrapper-jooq</module>
     </modules>
 
     <dependencyManagement>
@@ -238,6 +239,13 @@
                             <goals>
                                 <goal>report</goal>
                             </goals>
+                            <configuration>
+                                <excludes>
+                                    <!-- Исключаем папки -->
+                                    <exclude>edu/java/scrapper/domain/jooq/**</exclude>
+                                    <exclude>edu/java/generator/**</exclude>
+                                </excludes>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>

@@ -15,16 +15,35 @@ import org.springframework.stereotype.Component;
 public class TrackCommand implements Command {
     private static final String COMMAND_NAME = "/track";
     private static final String COMMAND_DESCRIPTION = "Начать отслеживание ссылки";
-    private static final String COMMAND_RESPONSE = "Здесь будет реализация команды /track";
+    private static final String MISSING_URL_MESSAGE = "Пожалуйста, предоставьте URL для отслеживания.";
+    private static final String SUCCESS_MESSAGE = "Ссылка успешно добавлена: ";
+    private static final String ERROR_MESSAGE = "Произошла ошибка при добавлении ссылки: ";
 
     private final ScrapperClient scrapperClient;
 
     @Override
     public String execute(Update update) {
         var tgChatId = update.message().chat().id();
-        scrapperClient.addLink(tgChatId, URI.create("https://www.example.com"));
-        log.info("Track command executed");
-        return COMMAND_RESPONSE;
+        var messageText = update.message().text();
+
+        try {
+
+            String[] parts = messageText.split(" ", 2);
+            if (parts.length < 2) {
+                return MISSING_URL_MESSAGE;
+            }
+
+            String url = parts[1];
+
+            URI uri = URI.create(url);
+            scrapperClient.addLink(tgChatId, uri);
+
+            log.info("Команда track выполнена");
+            return SUCCESS_MESSAGE + url;
+        } catch (Exception e) {
+            log.error("Ошибка при добавлении ссылки для отслеживания");
+            return ERROR_MESSAGE;
+        }
     }
 
     @Override

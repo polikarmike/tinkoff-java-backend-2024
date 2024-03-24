@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
-public class DatabaseCreationTest extends IntegrationTest {
+class DatabaseCreationTest extends IntegrationEnvironment {
 
     @Test
     @DisplayName("Проверка создания базы данных")
