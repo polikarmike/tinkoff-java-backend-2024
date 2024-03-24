@@ -3,7 +3,7 @@ package edu.java.scrapper.domain.repository.jooq;
 
 import edu.java.scrapper.domain.jooq.tables.records.LinkRecord;
 import edu.java.scrapper.domain.repository.LinkRepository;
-import edu.java.scrapper.dto.entity.Link;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Link;
 import edu.java.scrapper.exception.DataBaseError;
 import edu.java.scrapper.exception.InvalidLinkException;
 import edu.java.scrapper.exception.LinkNotFoundException;

@@ -1,10 +1,10 @@
-package edu.java.scrapper.service;
+package edu.java.scrapper.service.jdbc;
 
-import edu.java.scrapper.domain.repository.ChatLinkRepository;
-import edu.java.scrapper.domain.repository.ChatRepository;
-import edu.java.scrapper.domain.repository.LinkRepository;
-import edu.java.scrapper.dto.entity.Chat;
-import edu.java.scrapper.dto.entity.Link;
+import edu.java.scrapper.domain.repository.jdbc.JDBCChatLinkRepository;
+import edu.java.scrapper.domain.repository.jdbc.JDBCChatRepository;
+import edu.java.scrapper.domain.repository.jdbc.JDBCLinkRepository;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Chat;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Link;
 import edu.java.scrapper.utils.linkverifier.LinkVerifier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,15 +21,15 @@ import static org.mockito.Mockito.*;
 public class LinkServiceTest {
 
     @Mock
-    private LinkRepository linkRepository;
+    private JDBCLinkRepository linkRepository;
     @Mock
-    private ChatRepository chatRepository;
+    private JDBCChatRepository chatRepository;
     @Mock
-    private ChatLinkRepository chatLinkRepository;
+    private JDBCChatLinkRepository chatLinkRepository;
     @Mock
     private LinkVerifier linkVerifier;
     @InjectMocks
-    private LinkService linkService;
+    private JDBCLinkService linkService;
 
     @Test
     public void testAdd() {

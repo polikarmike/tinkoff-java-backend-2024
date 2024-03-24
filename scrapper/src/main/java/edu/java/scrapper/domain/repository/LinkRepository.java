@@ -1,6 +1,6 @@
 package edu.java.scrapper.domain.repository;
 
-import edu.java.scrapper.dto.entity.Link;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Link;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;

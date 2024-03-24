@@ -13,16 +13,23 @@ import org.springframework.stereotype.Component;
 public class StartCommand implements Command {
     private static final String COMMAND_NAME = "/start";
     private static final String COMMAND_DESCRIPTION = "Начать работу с ботом и зарегистрироваться";
-    private static final String COMMAND_RESPONSE = "Здесь будет реализация команды /start";
+    private static final String REGISTRATION_SUCCESS_MESSAGE = "Чат успешно зарегистрирован.";
+    private static final String REGISTRATION_ERROR_MESSAGE = "Произошла ошибка при регистрации чата: ";
 
     private final ScrapperClient scrapperClient;
 
     @Override
     public String execute(Update update) {
         var tgChatId = update.message().chat().id();
-        scrapperClient.registerChat(tgChatId);
-        log.info("Start command executed");
-        return COMMAND_RESPONSE;
+
+        try {
+            scrapperClient.registerChat(tgChatId);
+            log.info("Команда start выполнена");
+            return REGISTRATION_SUCCESS_MESSAGE;
+        } catch (Exception e) {
+            log.error("Ошибка при регистрации чата");
+            return REGISTRATION_ERROR_MESSAGE + e.getMessage();
+        }
     }
 
     @Override

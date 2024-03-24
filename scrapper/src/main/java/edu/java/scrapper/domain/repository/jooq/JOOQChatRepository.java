@@ -1,7 +1,7 @@
 package edu.java.scrapper.domain.repository.jooq;
 
 import edu.java.scrapper.domain.repository.ChatRepository;
-import edu.java.scrapper.dto.entity.Chat;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Chat;
 import edu.java.scrapper.exception.DataBaseError;
 import edu.java.scrapper.exception.MissingChatException;
 import java.util.List;

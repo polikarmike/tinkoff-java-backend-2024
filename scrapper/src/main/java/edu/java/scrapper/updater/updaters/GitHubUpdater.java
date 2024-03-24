@@ -1,7 +1,7 @@
 package edu.java.scrapper.updater.updaters;
 
 import edu.java.scrapper.client.github.GitHubClient;
-import edu.java.scrapper.dto.entity.Link;
+import edu.java.scrapper.dto.entity.LinkEntity;
 import edu.java.scrapper.dto.github.GHEventResponse;
 import edu.java.scrapper.dto.github.GHRepoResponse;
 import edu.java.scrapper.dto.github.GitHubRepoLink;
@@ -15,7 +15,8 @@ public class GitHubUpdater implements Updater {
     private final GitHubClient gitHubClient;
     private static final String BASE_HOST = "github.com";
 
-    public String getUpdateMessage(Link link) {
+    @Override
+    public String getUpdateMessage(LinkEntity link) {
         URI uri = link.getUri();
         GitHubRepoLink gitHubRepo = new GitHubRepoLink(uri);
         String owner = gitHubRepo.getOwner();

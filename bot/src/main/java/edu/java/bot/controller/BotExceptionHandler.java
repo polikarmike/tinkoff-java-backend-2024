@@ -46,7 +46,7 @@ public class BotExceptionHandler {
             .map(StackTraceElement::toString)
             .toList();
         return new ApiErrorResponse(
-            "Error occurred",
+            errorMessage,
             statusCode,
             ex.getClass().getSimpleName(),
             errorMessage,

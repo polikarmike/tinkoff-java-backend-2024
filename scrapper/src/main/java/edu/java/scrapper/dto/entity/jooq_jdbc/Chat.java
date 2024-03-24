@@ -1,4 +1,4 @@
-package edu.java.scrapper.dto.entity;
+package edu.java.scrapper.dto.entity.jooq_jdbc;
 
 import java.time.OffsetDateTime;
 import lombok.Data;

@@ -4,7 +4,6 @@ import edu.java.scrapper.domain.repository.ChatLinkRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 @Qualifier("JDBCChatLinkRepository")
-@Primary
 public class JDBCChatLinkRepository implements ChatLinkRepository {
 
     private final JdbcTemplate jdbcTemplate;

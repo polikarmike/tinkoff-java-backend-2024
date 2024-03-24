@@ -14,15 +14,23 @@ import org.springframework.stereotype.Component;
 public class DeleteCommand implements Command {
     private static final String COMMAND_NAME = "/delete";
     private static final String COMMAND_DESCRIPTION = "Прекратить работу и удалить данные";
-    private static final String COMMAND_RESPONSE = "Здесь будет реализация команды /delete";
+    private static final String SUCCESS_MESSAGE = "Чат успешно удален.";
+    private static final String ERROR_MESSAGE = "Произошла ошибка при удалении чата: ";
+
     private final ScrapperClient scrapperClient;
 
     @Override
     public String execute(Update update) {
         var tgChatId = update.message().chat().id();
-        scrapperClient.deleteChat(tgChatId);
-        log.info("Delete command executed");
-        return COMMAND_RESPONSE;
+
+        try {
+            scrapperClient.deleteChat(tgChatId);
+            log.info("Команда delete выполнена");
+            return SUCCESS_MESSAGE;
+        } catch (Exception e) {
+            log.error("Ошибка при удалении чата");
+            return ERROR_MESSAGE + e.getMessage();
+        }
     }
 
     @Override

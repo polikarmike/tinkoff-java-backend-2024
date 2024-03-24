@@ -1,28 +1,34 @@
-package edu.java.scrapper.service;
+package edu.java.scrapper.service.jooq;
 
 import edu.java.scrapper.client.bot.BotClient;
-import edu.java.scrapper.domain.repository.ChatLinkRepository;
-import edu.java.scrapper.domain.repository.LinkRepository;
-import edu.java.scrapper.dto.entity.Link;
+import edu.java.scrapper.domain.repository.jooq.JOOQChatLinkRepository;
+import edu.java.scrapper.domain.repository.jooq.JOOQLinkRepository;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Link;
 import edu.java.scrapper.updater.Updater;
 import edu.java.scrapper.updater.UpdaterHolder;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Optional;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class LinkUpdaterTest {
 
     @Mock
-    private LinkRepository linkRepository;
+    private JOOQLinkRepository linkRepository;
     @Mock
-    private ChatLinkRepository chatLinkRepository;
+    private JOOQChatLinkRepository chatLinkRepository;
     @Mock
     private UpdaterHolder updaterHolder;
     @Mock
@@ -31,7 +37,7 @@ public class LinkUpdaterTest {
     private Updater updater;
 
     @InjectMocks
-    private LinkUpdater linkUpdater;
+    private JOOQLinkUpdater linkUpdater;
 
 
     @Test

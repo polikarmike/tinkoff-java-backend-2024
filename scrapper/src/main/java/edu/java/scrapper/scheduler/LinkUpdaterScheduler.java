@@ -1,7 +1,5 @@
 package edu.java.scrapper.scheduler;
 
-
-
 import edu.java.scrapper.service.LinkUpdater;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

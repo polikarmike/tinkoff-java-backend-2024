@@ -1,11 +1,8 @@
 package edu.java.scrapper.domain.repository;
 
 import edu.java.scrapper.IntegrationEnvironment;
-import edu.java.scrapper.domain.repository.jdbc.JDBCChatRepository;
-import edu.java.scrapper.domain.repository.jooq.JOOQChatRepository;
-import edu.java.scrapper.dto.entity.Chat;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Chat;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;

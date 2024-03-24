@@ -4,7 +4,7 @@ import edu.java.common.dto.requests.AddLinkRequest;
 import edu.java.common.dto.requests.RemoveLinkRequest;
 import edu.java.common.dto.responses.LinkResponse;
 import edu.java.common.dto.responses.ListLinksResponse;
-import edu.java.scrapper.dto.entity.Link;
+import edu.java.scrapper.dto.entity.LinkEntity;
 import edu.java.scrapper.service.LinkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,7 +38,7 @@ public class LinkController {
 
         log.info("Запрос на получение всех ссылок");
 
-        Collection<Link> links = linkService.listAll(tgChatId);
+        Collection<? extends LinkEntity> links = linkService.listAll(tgChatId);
         List<LinkResponse> linkResponses = links.stream()
             .map(link -> new LinkResponse(link.getId(), link.getUri()))
             .toList();
@@ -55,7 +55,7 @@ public class LinkController {
 
         log.info("Запрос на добавление ссылки");
 
-        Link link = linkService.add(tgChatId, request.link());
+        LinkEntity link = linkService.add(tgChatId, request.link());
         return new LinkResponse(tgChatId, link.getUri());
     }
 
@@ -68,7 +68,7 @@ public class LinkController {
 
         log.info("Запрос на удаление ссылки");
 
-        Link link = linkService.remove(tgChatId, request.link());
+        LinkEntity link = linkService.remove(tgChatId, request.link());
         return new LinkResponse(tgChatId, link.getUri());
     }
 }

@@ -1,6 +1,6 @@
 package edu.java.scrapper.domain.repository;
 
-import edu.java.scrapper.dto.entity.Chat;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Chat;
 import java.util.List;
 import java.util.Optional;
 

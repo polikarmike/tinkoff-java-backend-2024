@@ -1,8 +1,8 @@
-package edu.java.scrapper.service;
+package edu.java.scrapper.service.jooq;
 
-import edu.java.scrapper.domain.repository.ChatLinkRepository;
-import edu.java.scrapper.domain.repository.ChatRepository;
-import edu.java.scrapper.dto.entity.Chat;
+import edu.java.scrapper.domain.repository.jooq.JOOQChatLinkRepository;
+import edu.java.scrapper.domain.repository.jooq.JOOQChatRepository;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Chat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,14 +19,14 @@ import static org.mockito.Mockito.*;
 public class TgChatServiceTest {
 
     @Mock
-    private ChatRepository chatRepository;
+    private JOOQChatRepository chatRepository;
     @Mock
-    private ChatLinkRepository chatLinkRepository;
+    private JOOQChatLinkRepository chatLinkRepository;
     @Mock
-    private LinkService linkService;
+    private JOOQLinkService linkService;
 
     @InjectMocks
-    private TgChatService tgChatService;
+    private JOOQTgChatService tgChatService;
 
 
 

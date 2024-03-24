@@ -5,6 +5,7 @@ app:
     force-check-delay: 10000
   link-updater:
     batch-size: 10
+  database-access-type: jpa
 
 clients:
   github:

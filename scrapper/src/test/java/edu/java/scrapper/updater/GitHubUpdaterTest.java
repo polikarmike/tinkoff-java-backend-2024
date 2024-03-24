@@ -1,7 +1,7 @@
 package edu.java.scrapper.updater;
 
 import edu.java.scrapper.client.github.GitHubClient;
-import edu.java.scrapper.dto.entity.Link;
+import edu.java.scrapper.dto.entity.jooq_jdbc.Link;
 import edu.java.scrapper.dto.github.GHEventResponse;
 import edu.java.scrapper.dto.github.GHRepoResponse;
 import edu.java.scrapper.updater.updaters.GitHubUpdater;
