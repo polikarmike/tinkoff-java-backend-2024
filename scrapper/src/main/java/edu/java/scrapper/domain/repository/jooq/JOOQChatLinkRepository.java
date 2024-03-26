@@ -5,13 +5,12 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import static edu.java.scrapper.domain.jooq.tables.Link.LINK;
 import static edu.java.scrapper.domain.jooq.tables.LinkChat.LINK_CHAT;
 
 @Repository
 @RequiredArgsConstructor
-@Qualifier("JOOQChatLinkRepository")
 public class JOOQChatLinkRepository implements ChatLinkRepository {
 
     private final DSLContext dsl;
@@ -56,5 +55,12 @@ public class JOOQChatLinkRepository implements ChatLinkRepository {
             .and(LINK_CHAT.LINK_ID.eq(linkId)))
             .fetchOne();
         return result != null && result.value1() > 0;
+    }
+
+    @Override
+    public int cleanupUnusedLinks() {
+        return dsl.deleteFrom(LINK)
+            .where(LINK.ID.notIn(dsl.select(LINK_CHAT.LINK_ID).from(LINK_CHAT)))
+            .execute();
     }
 }

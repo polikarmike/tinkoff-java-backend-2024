@@ -1,6 +1,6 @@
 package edu.java.scrapper.controller;
 
-import edu.java.scrapper.service.TgChatService;
+import edu.java.scrapper.service.jdbc.JDBCTgChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
-    private final TgChatService tgChatService;
+    private final JDBCTgChatService tgChatService;
 
     @Operation(summary = "Регистрация чата", description = "Регистрирует чат с указанным идентификатором")
     @PostMapping("/{id}")

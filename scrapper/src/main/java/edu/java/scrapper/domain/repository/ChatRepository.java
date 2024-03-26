@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface ChatRepository {
     Chat add(Chat chat);
 
-    Chat remove(Long id);
+    void remove(Long id);
 
     Optional<Chat> getById(Long id);
 

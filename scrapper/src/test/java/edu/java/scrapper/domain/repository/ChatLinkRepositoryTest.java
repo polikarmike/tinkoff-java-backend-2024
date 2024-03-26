@@ -1,7 +1,12 @@
 package edu.java.scrapper.domain.repository;
 
 import edu.java.scrapper.IntegrationEnvironment;
-
+import edu.java.scrapper.domain.repository.jdbc.JDBCChatLinkRepository;
+import edu.java.scrapper.domain.repository.jdbc.JDBCChatRepository;
+import edu.java.scrapper.domain.repository.jdbc.JDBCLinkRepository;
+import edu.java.scrapper.domain.repository.jooq.JOOQChatLinkRepository;
+import edu.java.scrapper.domain.repository.jooq.JOOQChatRepository;
+import edu.java.scrapper.domain.repository.jooq.JOOQLinkRepository;
 import edu.java.scrapper.dto.entity.Chat;
 import edu.java.scrapper.dto.entity.Link;
 import org.junit.jupiter.api.Assertions;
@@ -12,9 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
@@ -25,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -36,30 +38,22 @@ class ChatLinkRepositoryTest extends IntegrationEnvironment {
     private static final Map<String, LinkRepository> linkRepositories = new HashMap<>();
     private static final Map<String, ChatLinkRepository> chatLinkRepositories = new HashMap<>();
     @Autowired
-    @Qualifier("JOOQChatRepository")
-    private ChatRepository jooqChatRepository;
+    private JOOQChatRepository jooqChatRepository;
 
     @Autowired
-    @Qualifier("JDBCChatRepository")
-    private ChatRepository jdbcChatRepository;
+    private JDBCChatRepository jdbcChatRepository;
 
     @Autowired
-    @Qualifier("JOOQLinkRepository")
-    private LinkRepository jooqLinkRepository;
+    private JOOQLinkRepository jooqLinkRepository;
 
     @Autowired
-    @Qualifier("JDBCLinkRepository")
-    private LinkRepository jdbcLinkRepository;
+    private JDBCLinkRepository jdbcLinkRepository;
 
     @Autowired
-    @Qualifier("JOOQChatLinkRepository")
-    private ChatLinkRepository jooqChatLinkRepository;
+    private JOOQChatLinkRepository jooqChatLinkRepository;
 
     @Autowired
-    @Qualifier("JDBCChatLinkRepository")
-    private ChatLinkRepository jdbcChatLinkRepository;
-
-
+    private JDBCChatLinkRepository jdbcChatLinkRepository;
 
     @BeforeAll
     void setup() {

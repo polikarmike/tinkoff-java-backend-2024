@@ -3,23 +3,19 @@ package edu.java.scrapper.domain.repository.jooq;
 import edu.java.scrapper.domain.repository.ChatRepository;
 import edu.java.scrapper.dto.entity.Chat;
 import edu.java.scrapper.exception.DataBaseError;
-import edu.java.scrapper.exception.MissingChatException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import static edu.java.scrapper.domain.jooq.tables.Chat.CHAT;
 
 @Repository
 @RequiredArgsConstructor
-@Qualifier("JOOQChatRepository")
 public class JOOQChatRepository implements ChatRepository {
 
     private final DSLContext dslContext;
     private static final String CHAT_CREATION_ERROR_MESSAGE = "Chat was not created";
-    private static final String CHAT_NOT_FOUND_ERROR_MESSAGE = "Chat not found";
 
     @Override
     public Chat add(Chat chat) {
@@ -31,12 +27,10 @@ public class JOOQChatRepository implements ChatRepository {
     }
 
     @Override
-    public Chat remove(Long id) {
-        Chat deletedChat = getById(id).orElseThrow(() -> new MissingChatException(CHAT_NOT_FOUND_ERROR_MESSAGE));
+    public void remove(Long id) {
         dslContext.deleteFrom(CHAT)
             .where(CHAT.ID.eq(id))
             .execute();
-        return deletedChat;
     }
 
     @Override

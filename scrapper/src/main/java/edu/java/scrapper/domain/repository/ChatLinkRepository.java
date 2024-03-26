@@ -12,4 +12,6 @@ public interface ChatLinkRepository {
     List<Long> getChatIdsByLinkId(Long linkId);
 
     boolean exists(Long chatId, Long linkId);
+
+    int cleanupUnusedLinks();
 }

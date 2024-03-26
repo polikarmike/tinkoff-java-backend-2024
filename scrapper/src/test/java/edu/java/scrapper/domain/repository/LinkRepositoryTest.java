@@ -72,9 +72,9 @@ class LinkRepositoryTest extends IntegrationEnvironment {
         URI exampleURI = new URI("https://example.com");
         Link addedLink = linkRepository.add(exampleURI);
 
-        Link deletedLik = linkRepository.remove(exampleURI);
+        linkRepository.remove(exampleURI);
 
-        assertEquals(addedLink, deletedLik);
+        assertTrue(linkRepository.getLinkById(addedLink.getId()).isEmpty());
     }
 
     @ParameterizedTest(name = "{0}")

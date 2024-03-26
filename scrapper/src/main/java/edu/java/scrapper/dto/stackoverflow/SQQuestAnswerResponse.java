@@ -6,6 +6,7 @@ import java.util.List;
 
 public record SQQuestAnswerResponse(List<ItemResponse> items) {
     public record ItemResponse(
-        @JsonProperty("last_activity_date") OffsetDateTime lastUpdateTime) {
+        @JsonProperty("last_activity_date")
+        OffsetDateTime lastUpdateTime) {
     }
 }

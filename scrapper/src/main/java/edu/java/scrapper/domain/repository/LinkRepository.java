@@ -8,15 +8,15 @@ import java.util.Optional;
 public interface LinkRepository {
     Link add(URI uri);
 
-    Link remove(URI uri);
+    void remove(URI uri);
 
-    Link remove(long id);
+    void remove(long id);
 
     Optional<Link> getLinkByUri(URI uri);
 
     Optional<Link> getLinkById(long id);
 
-    Link updateLastUpdatedTime(long id);
+    void updateLastUpdatedTime(long id);
 
     List<Link> findAll();
 

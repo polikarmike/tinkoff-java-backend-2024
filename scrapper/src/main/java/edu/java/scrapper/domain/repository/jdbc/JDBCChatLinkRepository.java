@@ -3,7 +3,6 @@ package edu.java.scrapper.domain.repository.jdbc;
 import edu.java.scrapper.domain.repository.ChatLinkRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-@Qualifier("JDBCChatLinkRepository")
 @Primary
 public class JDBCChatLinkRepository implements ChatLinkRepository {
 
@@ -43,5 +41,11 @@ public class JDBCChatLinkRepository implements ChatLinkRepository {
         String sql = "SELECT COUNT(*) FROM Link_Chat WHERE chat_id = ? AND link_id = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, chatId, linkId);
         return count != null && count > 0;
+    }
+
+    @Override
+    public int cleanupUnusedLinks() {
+        String sql = "DELETE FROM Link WHERE id NOT IN (SELECT link_id FROM Link_Chat)";
+        return jdbcTemplate.update(sql);
     }
 }

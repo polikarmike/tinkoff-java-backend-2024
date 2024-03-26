@@ -5,16 +5,18 @@ import java.time.OffsetDateTime;
 
 public record GHEventResponse(
     String type,
-    @JsonProperty("payload") Payload payload,
-    @JsonProperty("created_at") OffsetDateTime createdAt) {
+    Payload payload,
+    @JsonProperty("created_at")
+    OffsetDateTime createdAt) {
     public record Payload(
-        @JsonProperty("issue") Issue issue,
-        @JsonProperty("pull_request") PullRequest pullRequest
+        Issue issue,
+        @JsonProperty("pull_request")
+        PullRequest pullRequest
 
     ) {
-        public record Issue(@JsonProperty("title") String title)  {}
+        public record Issue(String title)  {}
 
-        public record PullRequest(@JsonProperty("title") String title) {}
+        public record PullRequest(String title) {}
     }
 }
 
