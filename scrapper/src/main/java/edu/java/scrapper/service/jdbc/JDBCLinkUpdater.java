@@ -3,6 +3,7 @@ package edu.java.scrapper.service.jdbc;
 import edu.java.common.dto.requests.LinkUpdateRequest;
 import edu.java.scrapper.client.bot.BotClient;
 import edu.java.scrapper.dto.entity.Link;
+import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.LinkUpdater;
 import edu.java.scrapper.updater.Updater;
 import edu.java.scrapper.updater.UpdaterHolder;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Primary
 public class JDBCLinkUpdater implements LinkUpdater {
-    private final JDBCLinkService linkService;
+    private final LinkService linkService;
     private final UpdaterHolder updaterHolder;
     private final BotClient botClient;
 

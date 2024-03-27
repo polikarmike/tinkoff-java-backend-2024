@@ -5,6 +5,7 @@ import edu.java.scrapper.domain.repository.jdbc.JDBCChatRepository;
 import edu.java.scrapper.dto.entity.Chat;
 import edu.java.scrapper.exception.MissingChatException;
 import edu.java.scrapper.exception.RepeatedRegistrationException;
+import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.TgChatService;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class JDBCTgChatService implements TgChatService {
     private final JDBCChatRepository chatRepository;
     private final JDBCChatLinkRepository chatLinkRepository;
-    private final JDBCLinkService linkService;
+    private final LinkService linkService;
     private static final String MISSING_CHAT_ERROR_MESSAGE = "Chat does not exist";
     private static final String REPEATED_CHAT_ADDITION_ERROR_MESSAGE = "Chat already exists";
 
