@@ -5,7 +5,7 @@ import edu.java.common.dto.requests.RemoveLinkRequest;
 import edu.java.common.dto.responses.LinkResponse;
 import edu.java.common.dto.responses.ListLinksResponse;
 import edu.java.scrapper.dto.entity.Link;
-import edu.java.scrapper.service.jdbc.JDBCLinkService;
+import edu.java.scrapper.service.LinkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class LinkController {
-    private final JDBCLinkService linkService;
+    private final LinkService linkService;
 
     @Operation(summary = "Получить все ссылки", description = "Получает список всех ссылок")
     @GetMapping
