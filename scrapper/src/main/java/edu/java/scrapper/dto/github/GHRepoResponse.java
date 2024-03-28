@@ -1,4 +1,4 @@
-package edu.java.scrapper.dto;
+package edu.java.scrapper.dto.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -14,7 +14,7 @@ public record GHRepoResponse(
     OffsetDateTime createdAt,
 
     @JsonProperty("pushed_at")
-    OffsetDateTime pushedAt,
+    OffsetDateTime lastActivityDate,
 
     @JsonProperty("updated_at")
     OffsetDateTime updateAt) {

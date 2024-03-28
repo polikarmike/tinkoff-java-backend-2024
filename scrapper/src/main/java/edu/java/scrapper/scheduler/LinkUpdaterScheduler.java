@@ -1,7 +1,8 @@
 package edu.java.scrapper.scheduler;
 
 
-import edu.java.scrapper.client.bot.BotClient;
+
+import edu.java.scrapper.service.jdbc.JDBCLinkUpdater;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,11 +15,11 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(prefix = "app.scheduler", name = "enable", havingValue = "true")
 @RequiredArgsConstructor
 public class LinkUpdaterScheduler {
-    private final BotClient botClient;
+    private final JDBCLinkUpdater linkUpdater;
 
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
-
+        linkUpdater.update();
         log.info("Update method executed");
     }
 }

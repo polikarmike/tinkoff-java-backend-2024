@@ -6,6 +6,8 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  liquibase:
+    enabled: false
 
 springdoc:
   swagger-ui:

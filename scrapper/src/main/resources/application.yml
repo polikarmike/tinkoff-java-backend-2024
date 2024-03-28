@@ -1,8 +1,13 @@
 app:
   scheduler:
     enable: true
-    interval: 1000
+    interval: 10000
     force-check-delay: 10000
+  link-updater:
+    batch-size: 10
+  link-cleaner:
+    enable: true
+    time-cron-expression: 0 0 2 * * ? # second minute hour dayOfMonth month dayOfWeek
 
 clients:
   github:
@@ -15,6 +20,13 @@ clients:
 spring:
   application:
     name: scrapper
+  liquibase:
+    enabled: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
 
 springdoc:
   swagger-ui:
